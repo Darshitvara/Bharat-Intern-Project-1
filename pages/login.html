@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Interactive Form</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #00c6fb 0%, #005bea 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 91, 234, 0.37);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: visible; /* Set to visible to prevent button clipping */
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+        h1 {
+            color: #ffffff;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background-color: #00c6fb;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            position: relative;
+            font-family: inherit;
+        }
+        input:focus {
+            outline: none;
+            border-color: #00c6fb;
+            box-shadow: 0 0 15px rgba(0, 198, 251, 0.5);
+        }
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        button {
+    background-color: #344d53;
+    color: #ffffff;
+    border: none;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden; /* Ensure this is correct for your layout */
+    z-index: 1; /* Make sure button is above pseudo-element */
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px; /* Adjust size to ensure it doesn't cover button */
+    height: 200px; /* Adjust size to ensure it doesn't cover button */
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: all 0.5s ease;
+    z-index: 0; /* Ensure pseudo-element is below button text */
+}
+
+button:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+        button:hover {
+            background-color: #466597;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 91, 234, 0.2);
+        }
+        button:focus {
+            box-shadow: 0 0 10px rgba(0, 198, 251, 0.7);
+            outline: none;
+        } 
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Up</h1>
+        <form method="post" action="/register"    id="signupForm">
+            <div class="input-group">
+                <input type="text" id="name" name="name" required placeholder="Name">
+            </div>
+            <div class="input-group">
+                <input type="email" id="email" name="email" required placeholder="Email">
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" name="password" required placeholder="Password">
+            </div>
+            <button type="submit">Get Started</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.from('.container', { 
+                opacity: 0, 
+                y: 50, 
+                duration: 1, 
+                ease: 'power3.out',
+                rotation: 5,
+                scale: 0.9
+            });
+            gsap.from('h1', { 
+                opacity: 0, 
+                y: -30, 
+                duration: 0.8, 
+                delay: 0.5, 
+                ease: 'back.out(1.7)'
+            });
+            gsap.from('.input-group', { 
+                opacity: 0, 
+                x: -30, 
+                duration: 0.8, 
+                stagger: 0.2, 
+                ease: 'power2.out', 
+                delay: 0.8 
+            });
+            gsap.from('button', { 
+                opacity: 0, 
+                y: 30, 
+                duration: 0.8, 
+                ease: 'back.out(1.7)', 
+                delay: 1.5 
+            });
+
+            const form = document.getElementById('signupForm');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                gsap.to('.container', {
+                    opacity: 0,
+                    y: -50,
+                    rotation: -5,
+                    scale: 0.9,
+                    duration: 0.5,
+                    ease: 'power2.in',
+                    onComplete: () => {
+                        // Redirect to another page
+                        window.location.href = 'success.html';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
